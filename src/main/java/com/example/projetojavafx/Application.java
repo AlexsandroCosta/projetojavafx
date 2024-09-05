@@ -24,9 +24,14 @@ public class Application extends javafx.application.Application {
         return scene;
     }
 
-    public static Stage newStage(String url) throws IOException{
+    public static Stage newStage(String url, Object controller) throws IOException{
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource(url));
+
+        if(controller!=null){
+            fxmlLoader.setController(controller);
+        }
+
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();

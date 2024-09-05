@@ -47,7 +47,10 @@ public class ApplicationController {
 
                 if (item_selecionado != null){
                     try {
-                        stage = Application.newStage("campeonato-view.fxml");
+                        CampeonatoController campeonatoController = new CampeonatoController();
+                        campeonatoController.setCampeonatoSelecionado(item_selecionado);
+
+                        stage = Application.newStage("campeonato-view.fxml", campeonatoController);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
