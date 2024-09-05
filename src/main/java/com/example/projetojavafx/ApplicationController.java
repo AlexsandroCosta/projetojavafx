@@ -1,6 +1,7 @@
 package com.example.projetojavafx;
 
 import com.example.projetojavafx.model.dao.DAOFactory;
+import com.example.projetojavafx.model.entities.Admin;
 import com.example.projetojavafx.model.entities.Campeonato;
 import com.example.projetojavafx.model.entities.Divisao;
 import javafx.collections.FXCollections;
@@ -26,6 +27,12 @@ public class ApplicationController {
     private TextField ano;
     @FXML
     private Button filtrar;
+    @FXML
+    private TextField username;
+    @FXML
+    private TextField password;
+    @FXML
+    private Button entrar;
 
     public void initialize(){
         ObservableList<Campeonato> items = FXCollections.observableArrayList();
@@ -86,6 +93,29 @@ public class ApplicationController {
         }
 
         lista_campeonatos.setItems(items);
+
+    }
+
+    public void onEntrarClick(){
+        String usernameAdmin = username.getText().trim();
+        String passwordAdmin = password.getText().trim();
+
+        Admin admin = DAOFactory.createAdminDao().logar(usernameAdmin, passwordAdmin);
+
+        if(admin!=null){
+            try {
+                AdminController adminController = new AdminController();
+                adminController.setAdmin(admin);
+
+                stage = Application.newStage("admin-view.fxml", adminController);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }else{
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Username ou password inválidos.", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
 
     }
 
