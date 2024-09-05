@@ -8,8 +8,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ApplicationController {
+    private static Stage stage;
+
     @FXML
     private ListView<Campeonato> lista_campeonatos;
 
@@ -37,10 +42,17 @@ public class ApplicationController {
         }
 
         lista_campeonatos.setOnMouseClicked((MouseEvent event) -> {
-            Campeonato item_selecionado = lista_campeonatos.getSelectionModel().getSelectedItem();
+            if(event.getClickCount() == 2){
+                Campeonato item_selecionado = lista_campeonatos.getSelectionModel().getSelectedItem();
 
-            if (item_selecionado != null){
-                System.out.println("Item selecionado: " + item_selecionado.getId_campeonato());
+                if (item_selecionado != null){
+                    try {
+                        stage = Application.newStage("campeonato-view.fxml");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    //System.out.println("Item selecionado: " + item_selecionado.getId_campeonato());
+                }
             }
         });
     }
