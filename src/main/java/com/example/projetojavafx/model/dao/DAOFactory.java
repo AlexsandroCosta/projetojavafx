@@ -1,10 +1,7 @@
 package com.example.projetojavafx.model.dao;
 
 import com.example.projetojavafx.db.DB;
-import com.example.projetojavafx.model.dao.impl.CampeonatoDaoJDBC;
-import com.example.projetojavafx.model.dao.impl.DivisaoDaoJDBC;
-import com.example.projetojavafx.model.dao.impl.EstadoDaoJDBC;
-import com.example.projetojavafx.model.dao.impl.PaisDaoJDBC;
+import com.example.projetojavafx.model.dao.impl.*;
 
 public class DAOFactory {
 
@@ -20,7 +17,15 @@ public class DAOFactory {
         return new PaisDaoJDBC(DB.getConnection());
     }
 
-    public static EstadoDao createEstadoDao(){
-        return new EstadoDaoJDBC(DB.getConnection());
+    public static AdminDao createAdminDao(){
+        return new AdminDaoJDBC(DB.getConnection());
+    }
+
+    public static ClassificacaoDao createClassificacaoDao(){
+        return new ClassificacaoDaoJDBC(DB.getConnection());
+    }
+
+    public static ClubeDao createClubeDao(){
+        return new ClubeDaoJDBC(DB.getConnection());
     }
 }
