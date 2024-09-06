@@ -14,7 +14,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("application-view.fxml"));
         scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Aindo não tem um nome");
+        stage.setTitle("Ainda não tem um nome");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

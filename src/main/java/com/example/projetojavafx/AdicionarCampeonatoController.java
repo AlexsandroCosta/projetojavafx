@@ -129,13 +129,13 @@ public class AdicionarCampeonatoController {
                     campeonato.setData_inicio(dataInicioConvertida);
                     campeonato.setData_fim(dataFimConvertida);
 
-                    Platform.runLater(()->infoBarrinha.setText("Criando rodadas..."));
+                    Platform.runLater(()->infoBarrinha.setText("Criando rodadas"));
 
                     int id_campeonato = DAOFactory.createCampeonatoDao().inserir(campeonato);
 
                     int numRodadas = (clubes.size()*2) - 2;
                     int numPartidasPorRodada = clubes.size() / 2;
-                    int totalSteps = numRodadas * 2 + numRodadas * numPartidasPorRodada;
+                    int totalSteps = numRodadas * 2 + numRodadas * numPartidasPorRodada + clubes.size();
 
                     for(int i=1; i<=numRodadas; i++){
                         Rodada rodada = new Rodada();
@@ -148,7 +148,7 @@ public class AdicionarCampeonatoController {
 
                     List<Rodada> lista_rodadas = DAOFactory.createRodadaDao().procurarPorCampeonato(id_campeonato);
 
-                    Platform.runLater(()->infoBarrinha.setText("Gerando partidas..."));
+                    Platform.runLater(()->infoBarrinha.setText("Gerando partidas"));
 
                     long diasTotais = ChronoUnit.DAYS.between(dataInicio, dataFim);
                     long intervaloDias = diasTotais / numRodadas ;
@@ -182,6 +182,15 @@ public class AdicionarCampeonatoController {
 
                             updateProgress(++currentStep, totalSteps);
                         }
+                    }
+
+                    Platform.runLater(()->infoBarrinha.setText("Montando tabela de classificação"));
+
+                    for(Clube c : clubes){
+                        Classificacao cl = new Classificacao();
+                        cl.setId_campeonato(id_campeonato);
+                        cl.setId_clube(c.getId_clube());
+                        DAOFactory.createClassificacaoDao().inserir(cl);
                     }
 
                     updateProgress(1,1);

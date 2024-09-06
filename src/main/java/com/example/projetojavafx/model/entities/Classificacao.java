@@ -1,5 +1,7 @@
 package com.example.projetojavafx.model.entities;
 
+import com.example.projetojavafx.model.dao.DAOFactory;
+
 import java.util.Objects;
 
 public class Classificacao {
@@ -13,6 +15,10 @@ public class Classificacao {
     private int qtd_empates;
     private int qtd_gols_feitos;
     private int qtd_gols_sofridos;
+
+    public String getNomeClube(){
+        return DAOFactory.createClubeDao().procurarPorId(id_clube).getNome();
+    }
 
     public int getId_classificacao() {
         return id_classificacao;

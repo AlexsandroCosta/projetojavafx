@@ -1,5 +1,6 @@
 package com.example.projetojavafx.model.dao.impl;
 
+import com.example.projetojavafx.db.DB;
 import com.example.projetojavafx.model.dao.ClubeDao;
 import com.example.projetojavafx.model.entities.Clube;
 
@@ -34,6 +35,26 @@ public class ClubeDaoJDBC implements ClubeDao {
 
     @Override
     public Clube procurarPorId(int id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("select * from Clube where id_clube=?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            while(rs.next()){
+                Clube c = new Clube();
+                c.setNome(rs.getString("nome"));
+                return c;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeResultset(rs);
+            DB.closeStatement(st);
+        }
+
         return null;
     }
 

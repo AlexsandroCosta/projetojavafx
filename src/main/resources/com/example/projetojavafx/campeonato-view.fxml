@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-
+   <children>
+      <Label fx:id="titulo" alignment="CENTER" layoutX="173.0" layoutY="22.0" prefHeight="18.0" prefWidth="255.0" />
+      <TableView fx:id="tabela" layoutX="64.0" layoutY="59.0" prefHeight="200.0" prefWidth="472.0">
+        <columns>
+          <TableColumn fx:id="clubeColumn" prefWidth="150.0" text="Clube" />
+          <TableColumn fx:id="pontosColumn" prefWidth="40.0" text="Pts" />
+            <TableColumn fx:id="partidasColumn" prefWidth="40.0" text="PJ" />
+            <TableColumn fx:id="vitoriasColumn" prefWidth="40.0" text="VIT" />
+            <TableColumn fx:id="empatesColumn" prefWidth="40.0" text="E" />
+            <TableColumn fx:id="derrotasColumn" prefWidth="40.0" text="DER" />
+            <TableColumn fx:id="golsFeitosColumn" prefWidth="40.0" text="GM" />
+            <TableColumn fx:id="golsSofridosColumn" prefWidth="40.0" text="GC" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>
