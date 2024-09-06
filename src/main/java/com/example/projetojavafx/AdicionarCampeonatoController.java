@@ -2,8 +2,10 @@ package com.example.projetojavafx;
 
 import com.example.projetojavafx.model.dao.DAOFactory;
 import com.example.projetojavafx.model.entities.*;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -29,6 +31,10 @@ public class AdicionarCampeonatoController {
     private ListView<Clube> listar_clubes;
     @FXML
     private Button adicionar;
+    @FXML
+    private ProgressBar barrinha;
+    @FXML
+    private Label infoBarrinha;
 
     public void initialize(){
         ObservableList<Clube> items = FXCollections.observableArrayList();
@@ -108,66 +114,103 @@ public class AdicionarCampeonatoController {
             return;
         }
 
-        Campeonato campeonato = new Campeonato();
-        campeonato.setNome(nomeCampeonato);
-        campeonato.setId_divisao(divisaoCampeonato.getId_divisao());
-        campeonato.setAno(anoCampeonato);
-        campeonato.setData_inicio(dataInicioConvertida);
-        campeonato.setData_fim(dataFimConvertida);
+        barrinha.setVisible(true);
+        infoBarrinha.setVisible(true);
 
-        int id_campeonato = DAOFactory.createCampeonatoDao().inserir(campeonato);
+        Integer anofinal = anoCampeonato;
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try{
+                    Campeonato campeonato = new Campeonato();
+                    campeonato.setNome(nomeCampeonato);
+                    campeonato.setId_divisao(divisaoCampeonato.getId_divisao());
+                    campeonato.setAno(anofinal);
+                    campeonato.setData_inicio(dataInicioConvertida);
+                    campeonato.setData_fim(dataFimConvertida);
 
-        int numRodadas = (clubes.size()*2) - 2;
+                    Platform.runLater(()->infoBarrinha.setText("Criando rodadas..."));
 
-        for(int i=1; i<=numRodadas; i++){
-            Rodada rodada = new Rodada();
-            rodada.setId_campeonato(id_campeonato);
-            rodada.setNumero(i);
-            DAOFactory.createRodadaDao().inserir(rodada);
-        }
+                    int id_campeonato = DAOFactory.createCampeonatoDao().inserir(campeonato);
 
-        List<Rodada> lista_rodadas = DAOFactory.createRodadaDao().procurarPorCampeonato(id_campeonato);
+                    int numRodadas = (clubes.size()*2) - 2;
+                    int numPartidasPorRodada = clubes.size() / 2;
+                    int totalSteps = numRodadas * 2 + numRodadas * numPartidasPorRodada;
 
-        int numPartidasPorRodada = clubes.size() / 2;
-        long diasTotais = ChronoUnit.DAYS.between(dataInicio, dataFim);
-        long intervaloDias = diasTotais / numRodadas ;
-        
-        int n = clubes.size();
+                    for(int i=1; i<=numRodadas; i++){
+                        Rodada rodada = new Rodada();
+                        rodada.setId_campeonato(id_campeonato);
+                        rodada.setNumero(i);
+                        DAOFactory.createRodadaDao().inserir(rodada);
 
-        for (int rodada = 0; rodada < numRodadas; rodada++) {
-            for (int i = 0; i < numPartidasPorRodada; i++) {
-                int timeCasa = (rodada + i) % (n - 1);
-                int timeFora = (n - 1 - i + rodada) % (n - 1);
+                        updateProgress(i, totalSteps);
+                    }
 
-                if (i == 0) {
-                    timeFora = n - 1;
+                    List<Rodada> lista_rodadas = DAOFactory.createRodadaDao().procurarPorCampeonato(id_campeonato);
+
+                    Platform.runLater(()->infoBarrinha.setText("Gerando partidas..."));
+
+                    long diasTotais = ChronoUnit.DAYS.between(dataInicio, dataFim);
+                    long intervaloDias = diasTotais / numRodadas ;
+
+                    int n = clubes.size();
+                    int currentStep = numRodadas*2;
+
+                    for (int rodada = 0; rodada < numRodadas; rodada++) {
+                        for (int i = 0; i < numPartidasPorRodada; i++) {
+                            int timeCasa = (rodada + i) % (n - 1);
+                            int timeFora = (n - 1 - i + rodada) % (n - 1);
+
+                            if (i == 0) {
+                                timeFora = n - 1;
+                            }
+
+                            Clube clubeCasa = clubes.get(timeCasa);
+                            Clube clubeFora = clubes.get(timeFora);
+
+                            if (clubeCasa != null && clubeFora != null) {
+                                Partida partida = new Partida();
+                                partida.setId_rodada(lista_rodadas.get(rodada).getId_rodada());
+                                partida.setId_clube_casa(clubeCasa.getId_clube());
+                                partida.setId_clube_fora(clubeFora.getId_clube());
+
+                                LocalDate dataPartida = dataInicio.plusDays(rodada * intervaloDias);
+                                partida.setData_partida(Date.from(dataPartida.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+                                DAOFactory.createPartidaDao().inserir(partida);
+                            }
+
+                            updateProgress(++currentStep, totalSteps);
+                        }
+                    }
+
+                    updateProgress(1,1);
+
+                    Platform.runLater(()->{
+                        nome.setText(null);
+                        divisao.setValue(null);
+                        ano.setText(null);
+                        data_inicio.setValue(null);
+                        data_fim.setValue(null);
+
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Campeonato adicionado com sucesso!", ButtonType.OK);
+                        alert.showAndWait();
+                    });
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }finally {
+                    Platform.runLater(()->barrinha.setVisible(false));
+                    Platform.runLater(()->infoBarrinha.setVisible(false));
                 }
-
-                Clube clubeCasa = clubes.get(timeCasa);
-                Clube clubeFora = clubes.get(timeFora);
-
-                if (clubeCasa != null && clubeFora != null) {
-                    Partida partida = new Partida();
-                    partida.setId_rodada(lista_rodadas.get(rodada).getId_rodada());
-                    partida.setId_clube_casa(clubeCasa.getId_clube());
-                    partida.setId_clube_fora(clubeFora.getId_clube());
-
-                    LocalDate dataPartida = dataInicio.plusDays(rodada * intervaloDias);
-                    partida.setData_partida(Date.from(dataPartida.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-
-                    DAOFactory.createPartidaDao().inserir(partida);
-                }
+                return null;
             }
-        }
+        };
 
-        nome.setText(null);
-        divisao.setItems(null);
-        ano.setText(null);
-        data_inicio.setValue(null);
-        data_fim.setValue(null);
+        barrinha.progressProperty().bind(task.progressProperty());
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Campeonato adicionado com sucesso!", ButtonType.OK);
-        alert.showAndWait();
-
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 }
