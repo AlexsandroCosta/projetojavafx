@@ -16,17 +16,27 @@ public class CampeonatoDaoJDBC implements CampeonatoDao {
     }
 
     @Override
-    public void inserir(Campeonato c) {
+    public int inserir(Campeonato c) {
         PreparedStatement st = null;
+        ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("insert into Campeonato(nome, id_divisao, ano, data_inicio, data_fim) values (?,?,?,?,?)");
+            st = conn.prepareStatement("insert into Campeonato(nome, id_divisao, ano, data_inicio, data_fim) values (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             st.setString(1, c.getNome());
             st.setInt(2, c.getId_divisao());
             st.setInt(3, c.getAno());
             st.setDate(4, new Date(c.getData_inicio().getTime()));
             st.setDate(5, new Date(c.getData_fim().getTime()));
             st.executeUpdate();
+
+            rs = st.getGeneratedKeys();
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }else{
+                return 0;
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {

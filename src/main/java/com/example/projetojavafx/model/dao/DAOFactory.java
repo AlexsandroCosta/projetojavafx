@@ -28,4 +28,12 @@ public class DAOFactory {
     public static ClubeDao createClubeDao(){
         return new ClubeDaoJDBC(DB.getConnection());
     }
+
+    public static RodadaDao createRodadaDao(){
+        return new RodadaDaoJDBC(DB.getConnection());
+    }
+
+    public static PartidaDao createPartidaDao(){
+        return new PartidaDaoJDBC(DB.getConnection());
+    }
 }

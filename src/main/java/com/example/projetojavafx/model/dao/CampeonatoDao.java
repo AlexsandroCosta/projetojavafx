@@ -5,7 +5,7 @@ import com.example.projetojavafx.model.entities.Campeonato;
 import java.util.List;
 
 public interface CampeonatoDao {
-    void inserir(Campeonato c);
+    int inserir(Campeonato c);
     void atualizar(Campeonato c);
     void deletarPorId(int id);
     Campeonato procurarPorId(int id);
