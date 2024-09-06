@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface RodadaDao {
     void inserir(Rodada r);
-    List<Rodada> procurarPorTodos();
+    List<Rodada> procurarPorCampeonato(int id_campeonato);
 }

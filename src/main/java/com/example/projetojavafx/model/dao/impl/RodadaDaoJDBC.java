@@ -6,7 +6,9 @@ import com.example.projetojavafx.model.entities.Rodada;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RodadaDaoJDBC implements RodadaDao{
@@ -21,7 +23,7 @@ public class RodadaDaoJDBC implements RodadaDao{
         PreparedStatement st = null;
 
         try {
-            st = conn.prepareStatement("inser into Rodada (id_campeonato, numero) values (?,?)");
+            st = conn.prepareStatement("insert into Rodada (id_campeonato, numero) values (?,?)");
             st.setInt(1, r.getId_campeonato());
             st.setInt(2, r.getNumero());
             st.executeUpdate();
@@ -35,7 +37,29 @@ public class RodadaDaoJDBC implements RodadaDao{
     }
 
     @Override
-    public List<Rodada> procurarPorTodos() {
-        return List.of();
+    public List<Rodada> procurarPorCampeonato(int id_campeonato) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("select * from Rodada where id_campeonato=?");
+            st.setInt(1, id_campeonato);
+            rs = st.executeQuery();
+            List<Rodada> lista = new ArrayList<>();
+
+            while(rs.next()){
+                Rodada r = new Rodada();
+                r.setId_rodada(rs.getInt("id_rodada"));
+                r.setId_campeonato(rs.getInt("id_campeonato"));
+                r.setNumero(rs.getInt("numero"));
+
+                lista.add(r);
+            }
+
+            return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
