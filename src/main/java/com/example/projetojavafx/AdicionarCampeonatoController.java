@@ -117,7 +117,9 @@ public class AdicionarCampeonatoController {
 
         int id_campeonato = DAOFactory.createCampeonatoDao().inserir(campeonato);
 
-        for(int i=1; i<(clubes.size()*2)-1; i++){
+        int numRodadas = (clubes.size()*2) - 2;
+
+        for(int i=1; i<=numRodadas; i++){
             Rodada rodada = new Rodada();
             rodada.setId_campeonato(id_campeonato);
             rodada.setNumero(i);
@@ -126,35 +128,34 @@ public class AdicionarCampeonatoController {
 
         List<Rodada> lista_rodadas = DAOFactory.createRodadaDao().procurarPorCampeonato(id_campeonato);
 
+        int numPartidasPorRodada = clubes.size() / 2;
         long diasTotais = ChronoUnit.DAYS.between(dataInicio, dataFim);
-        long intervaloDias = diasTotais / (clubes.size()*2)-2;
-        int id_rodada;
+        long intervaloDias = diasTotais / numRodadas ;
+        
+        int n = clubes.size();
 
-        for(int i=0; i<clubes.size(); i++){
-            id_rodada = 1;
-            for(int j=0; j<clubes.size(); j++){
-                if(i!=j){
-                    Partida p = new Partida();
+        for (int rodada = 0; rodada < numRodadas; rodada++) {
+            for (int i = 0; i < numPartidasPorRodada; i++) {
+                int timeCasa = (rodada + i) % (n - 1);
+                int timeFora = (n - 1 - i + rodada) % (n - 1);
 
-                    int rodada;
-                    if(i>j){
-                        rodada = id_rodada+clubes.size()-2;
-                    }else{
-                        rodada = id_rodada-1;
-                    }
-                    //tem time jogando no mesmo dia e o espeço entre as rodadas são de 1 dia TEM Q VER ISSO AI
-                    p.setId_rodada(lista_rodadas.get(rodada).getId_rodada());
-                    p.setId_clube_casa(clubes.get(i).getId_clube());
-                    p.setId_clube_fora(clubes.get(j).getId_clube());
+                if (i == 0) {
+                    timeFora = n - 1;
+                }
+
+                Clube clubeCasa = clubes.get(timeCasa);
+                Clube clubeFora = clubes.get(timeFora);
+
+                if (clubeCasa != null && clubeFora != null) {
+                    Partida partida = new Partida();
+                    partida.setId_rodada(lista_rodadas.get(rodada).getId_rodada());
+                    partida.setId_clube_casa(clubeCasa.getId_clube());
+                    partida.setId_clube_fora(clubeFora.getId_clube());
 
                     LocalDate dataPartida = dataInicio.plusDays(rodada * intervaloDias);
-                    p.setData_partida(Date.from(dataPartida.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                    partida.setData_partida(Date.from(dataPartida.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
-                    DAOFactory.createPartidaDao().inserir(p);
-
-                    if(i<j){
-                        id_rodada++;
-                    }
+                    DAOFactory.createPartidaDao().inserir(partida);
                 }
             }
         }

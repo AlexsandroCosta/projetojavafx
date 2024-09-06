@@ -59,6 +59,9 @@ public class RodadaDaoJDBC implements RodadaDao{
             return lista;
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            DB.closeResultset(rs);
+            DB.closeStatement(st);
         }
 
     }
