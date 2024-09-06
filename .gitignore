@@ -1,0 +1,83 @@
+# Diretórios de compilação
+/build/
+/out/
+
+# Arquivos gerados pelo IDE
+/.idea/
+/*.iml
+/.classpath
+/.project
+/.settings/
+
+# Arquivos de cache e logs
+/.gradle/
+/.gradle/
+/.mvn/
+target/
+*.log
+
+# Arquivos do Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Arquivos do Gradle
+*.jar
+*.war
+*.ear
+*.class
+.gradle/
+/build/
+.gradle/
+/out/
+
+# Binários e bibliotecas
+/bin/
+/lib/
+/dist/
+/target/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de configuração de IDE
+*.swp
+*.swo
+
+# Arquivos temporários do sistema
+*.tmp
+*.temp
+*.swp
+
+# Arquivos específicos do NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Arquivos específicos do IntelliJ IDEA
+/.idea/
+/*.iws
+/*.iml
+/*.ipr
+
+# Arquivos específicos do Eclipse
+/.metadata
+/.recommenders
+/classpath
+/.project
+/.settings
+/bin/
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# Arquivos de configuração do VSCode
+.vscode/
