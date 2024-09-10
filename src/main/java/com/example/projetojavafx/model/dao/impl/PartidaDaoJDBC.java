@@ -6,10 +6,8 @@ import com.example.projetojavafx.model.dao.PartidaDao;
 import com.example.projetojavafx.model.entities.Pais;
 import com.example.projetojavafx.model.entities.Partida;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartidaDaoJDBC implements PartidaDao {
@@ -44,6 +42,34 @@ public class PartidaDaoJDBC implements PartidaDao {
 
     @Override
     public List<Partida> procurarPorRodada(int id_rodada) {
-        return List.of();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("select * from Partida where id_rodada=?");
+            st.setInt(1, id_rodada);
+            rs = st.executeQuery();
+            List<Partida> lista = new ArrayList<>();
+
+            while(rs.next()){
+                Partida p = new Partida();
+                p.setId_partida(rs.getInt("id_partida"));
+                p.setId_rodada(rs.getInt("id_rodada"));
+                p.setId_clube_fora(rs.getInt("id_clube_casa"));
+                p.setId_clube_fora(rs.getInt("id_clube_fora"));
+                p.setData_partida(rs.getDate("data_partida"));
+                p.setGols_casa(rs.getInt("gols_casa"));
+                p.setGols_fora(rs.getInt("gols_fora"));
+
+                lista.add(p);
+            }
+
+            return lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeResultset(rs);
+            DB.closeStatement(st);
+        }
     }
 }

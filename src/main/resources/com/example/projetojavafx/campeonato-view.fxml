@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="511.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="titulo" alignment="CENTER" layoutX="173.0" layoutY="22.0" prefHeight="18.0" prefWidth="255.0" />
-      <TableView fx:id="tabela" layoutX="64.0" layoutY="59.0" prefHeight="200.0" prefWidth="472.0">
+      <Label fx:id="titulo" alignment="CENTER" layoutX="239.0" layoutY="23.0" prefHeight="18.0" prefWidth="255.0" />
+      <TableView fx:id="tabela" layoutX="127.0" layoutY="54.0" prefHeight="202.0" prefWidth="479.0">
         <columns>
           <TableColumn fx:id="clubeColumn" prefWidth="150.0" text="Clube" />
           <TableColumn fx:id="pontosColumn" prefWidth="40.0" text="Pts" />
@@ -18,7 +19,12 @@
             <TableColumn fx:id="derrotasColumn" prefWidth="40.0" text="DER" />
             <TableColumn fx:id="golsFeitosColumn" prefWidth="40.0" text="GM" />
             <TableColumn fx:id="golsSofridosColumn" prefWidth="40.0" text="GC" />
+            <TableColumn fx:id="saldoGolColumn" prefWidth="48.0" text="SG" />
         </columns>
       </TableView>
+      <Label layoutX="107.0" layoutY="271.0" prefHeight="18.0" prefWidth="76.0" text="Rodadas:" />
+      <ListView fx:id="lista_rodadas" layoutX="107.0" layoutY="289.0" prefHeight="200.0" prefWidth="125.0" />
+      <Label layoutX="278.0" layoutY="271.0" prefHeight="18.0" prefWidth="76.0" text="Partidas:" />
+      <ListView fx:id="lista_partidas" layoutX="278.0" layoutY="289.0" prefHeight="200.0" prefWidth="356.0" />
    </children>
 </AnchorPane>
