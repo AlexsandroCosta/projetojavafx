@@ -54,10 +54,10 @@ public class AdminController {
 
                 if (item_selecionado != null){
                     try {
-                        CampeonatoController campeonatoController = new CampeonatoController();
-                        campeonatoController.setCampeonatoSelecionado(item_selecionado);
+                        AdminCampeonatoController controller = new AdminCampeonatoController();
+                        controller.setCampeonatoSelecionado(item_selecionado);
 
-                        stage = Application.newStage("atualizar-campeonato-view.fxml", campeonatoController);
+                        stage = Application.newStage("admin-campeonato-view.fxml", controller);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

@@ -15,9 +15,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-public class CampeonatoController {
+import java.io.IOException;
+
+public class AdminCampeonatoController {
     private Campeonato campeonato;
+    private static Stage stage;
+
+    public void setCampeonatoSelecionado(Campeonato campeonato){
+        this.campeonato = campeonato;
+    }
 
     @FXML
     private Label titulo;
@@ -44,17 +52,13 @@ public class CampeonatoController {
     @FXML
     private ListView<Rodada> lista_rodadas;
     @FXML
-    private ListView<String> lista_partidas;
-
-    public void setCampeonatoSelecionado(Campeonato campeonato){
-        this.campeonato = campeonato;
-    }
+    private ListView<Partida> lista_partidas;
 
     public void initialize(){
         titulo.setText(campeonato.toString());
 
         clubeColumn.setCellValueFactory(cellData ->
-            new ReadOnlyObjectWrapper<>(cellData.getValue().getNomeClube())
+                new ReadOnlyObjectWrapper<>(cellData.getValue().getNomeClube())
         );
         pontosColumn.setCellValueFactory(new PropertyValueFactory<>("pontos"));
         partidasColumn.setCellValueFactory(new PropertyValueFactory<>("qtd_partidas"));
@@ -64,7 +68,7 @@ public class CampeonatoController {
         golsFeitosColumn.setCellValueFactory(new PropertyValueFactory<>("qtd_gols_feitos"));
         golsSofridosColumn.setCellValueFactory(new PropertyValueFactory<>("qtd_gols_sofridos"));
         saldoGolColumn.setCellValueFactory(cellData ->
-            new ReadOnlyObjectWrapper<>(cellData.getValue().getQtd_gols_feitos() - cellData.getValue().getQtd_gols_sofridos())
+                new ReadOnlyObjectWrapper<>(cellData.getValue().getQtd_gols_feitos() - cellData.getValue().getQtd_gols_sofridos())
         );
         tabela.setItems(getClassificacao());
 
@@ -81,13 +85,30 @@ public class CampeonatoController {
                 Rodada rodada = lista_rodadas.getSelectionModel().getSelectedItem();
 
                 if(rodada != null){
-                    ObservableList<String> partidas = FXCollections.observableArrayList();
+                    ObservableList<Partida> partidas = FXCollections.observableArrayList();
 
                     for(Partida p : DAOFactory.createPartidaDao().procurarPorRodada(rodada.getId_rodada())){
-                        partidas.add(p.getNomeClube_casa() + " " + p.getGols_casa() + " X " + p.getGols_fora() + " " + p.getNomeClubeFora());
+                        partidas.add(p);
                     }
 
                     lista_partidas.setItems(partidas);
+
+                    lista_partidas.setOnMouseClicked((MouseEvent event2) -> {
+                        if(event2.getClickCount()==2){
+                            Partida partida_selecionada = lista_partidas.getSelectionModel().getSelectedItem();
+
+                            if(partida_selecionada!=null){
+                                AtualizarPartidaController controller = new AtualizarPartidaController();
+                                controller.setPartidaSelecionado(partida_selecionada);
+
+                                try {
+                                    stage = Application.newStage("atualizar-partida-view.fxml", controller);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -102,6 +123,4 @@ public class CampeonatoController {
 
         return classificacao;
     }
-
-
 }

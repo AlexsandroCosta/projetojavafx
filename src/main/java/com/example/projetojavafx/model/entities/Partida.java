@@ -1,5 +1,7 @@
 package com.example.projetojavafx.model.entities;
 
+import com.example.projetojavafx.model.dao.DAOFactory;
+
 import java.util.Date;
 import java.util.Objects;
 
@@ -44,8 +46,8 @@ public class Partida {
         this.id_clube_fora = id_clube_fora;
     }
 
-    public Date getData_partida() {
-        return data_partida;
+    public java.sql.Date getData_partida() {
+        return (java.sql.Date) data_partida;
     }
 
     public void setData_partida(Date data_partida) {
@@ -68,6 +70,14 @@ public class Partida {
         this.gols_fora = gols_fora;
     }
 
+    public String getNomeClube_casa(){
+        return DAOFactory.createClubeDao().procurarPorId(id_clube_casa).getNome();
+    }
+
+    public String getNomeClubeFora(){
+        return DAOFactory.createClubeDao().procurarPorId(id_clube_fora).getNome();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,14 +93,6 @@ public class Partida {
 
     @Override
     public String toString() {
-        return "Partida{" +
-                "id_partida=" + id_partida +
-                ", id_rodada=" + id_rodada +
-                ", id_clube_casa=" + id_clube_casa +
-                ", id_clube_fora=" + id_clube_fora +
-                ", data_partida=" + data_partida +
-                ", gols_cara=" + gols_casa +
-                ", gols_fora=" + gols_fora +
-                '}';
+        return getNomeClube_casa() + " " + gols_casa + " X " + gols_fora + " " + getNomeClubeFora();
     }
 }

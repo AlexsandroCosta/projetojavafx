@@ -37,6 +37,20 @@ public class PartidaDaoJDBC implements PartidaDao {
 
     @Override
     public void atualizar(Partida p) {
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("update Partida set data_partida=?, gols_casa=?, gols_fora=? where id_partida=?");
+            st.setDate(1, p.getData_partida());
+            st.setInt(2, p.getGols_casa());
+            st.setInt(3, p.getGols_fora());
+            st.setInt(4, p.getId_partida());
+            st.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeStatement(st);
+        }
 
     }
 
@@ -55,7 +69,7 @@ public class PartidaDaoJDBC implements PartidaDao {
                 Partida p = new Partida();
                 p.setId_partida(rs.getInt("id_partida"));
                 p.setId_rodada(rs.getInt("id_rodada"));
-                p.setId_clube_fora(rs.getInt("id_clube_casa"));
+                p.setId_clube_casa(rs.getInt("id_clube_casa"));
                 p.setId_clube_fora(rs.getInt("id_clube_fora"));
                 p.setData_partida(rs.getDate("data_partida"));
                 p.setGols_casa(rs.getInt("gols_casa"));
