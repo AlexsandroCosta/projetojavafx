@@ -42,12 +42,19 @@ public class AtualizarPartidaController {
     }
 
     public void onAtualizarClick(){
-        System.out.println(gols_casa.getText());
-        System.out.println(gols_fora.getText());
-        System.out.println(data_partida.getValue());
+
+        if(gols_casa.getText().isEmpty() && !gols_fora.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
+            alert.showAndWait();
+        }
+
+        if(!gols_casa.getText().isEmpty() && gols_fora.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
+            alert.showAndWait();
+        }
 
         if(gols_casa.getText().isEmpty() || gols_fora.getText().isEmpty()){
-            if(partida.getGols_casa()!=-1){
+            if(partida.getGols_casa()!=-1 && partida.getGols_fora()!=-1){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
                 alert.showAndWait();
             }
@@ -57,6 +64,8 @@ public class AtualizarPartidaController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Digite uma data válida", ButtonType.OK);
             alert.showAndWait();
         }
+
+
 
     }
 
