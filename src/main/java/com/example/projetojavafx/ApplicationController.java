@@ -30,7 +30,7 @@ public class ApplicationController {
     @FXML
     private TextField username;
     @FXML
-    private TextField password;
+    private PasswordField password;
     @FXML
     private Button entrar;
 
