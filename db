@@ -1,0 +1,123 @@
+drop database projetojavafx;
+create DATABASE projetojavafx;
+use projetojavafx;
+
+CREATE table Admin(
+	id_admin int auto_increment primary key,
+    username varchar(50) unique not null,
+    password varchar(50) not null
+);
+
+CREATE table Divisao(
+id_divisao int AUTO_INCREMENT PRIMARY KEY,
+divisao varchar(30)
+);
+
+CREATE TABLE Pais(
+id_pais int AUTO_INCREMENT PRIMARY KEY,
+nome varchar(30)
+);
+
+CREATE TABLE Clube(
+id_clube int AUTO_INCREMENT PRIMARY key,
+id_pais int,
+id_divisao int null,
+nome varchar(50),
+FOREIGN KEY (id_pais) REFERENCES Pais(id_pais),
+FOREIGN key (id_divisao) REFERENCES Divisao(id_divisao)
+);
+
+create table Atleta(
+id_atleta int AUTO_INCREMENT PRIMARY key,
+id_clube int null,
+id_pais int,
+nome varchar(100),
+sexo ENUM ('F', 'M'),
+data_nascimento date,
+FOREIGN key (id_clube) REFERENCES Clube(id_clube),
+FOREIGN key (id_pais) references Pais(id_pais)
+);
+
+create table Campeonato(
+id_campeonato int AUTO_INCREMENT PRIMARY KEY,
+nome varchar(150),
+id_divisao int,
+ano int,
+data_inicio date,
+data_fim date,
+foreign key (id_divisao) references Divisao(id_divisao)
+);
+
+create table Rodada(
+id_rodada int auto_increment primary key,
+id_campeonato int,
+numero int,
+foreign key (id_campeonato) references Campeonato(id_campeonato) on delete
+cascade
+);
+
+create table Classificacao(
+id_classificacao int auto_increment primary key,
+id_campeonato int,
+id_clube int,
+pontos int default 0,
+qtd_partidas int default 0,
+qtd_vitorias int default 0,
+qtd_derrotas int default 0,
+qtd_empates int default 0,
+qtd_gols_feitos int default 0,
+qtd_gols_sofridos int default 0,
+foreign key (id_campeonato) references Campeonato(id_campeonato) on delete
+cascade,
+foreign key (id_clube) references Clube(id_clube)
+);
+
+create table Partida(
+id_partida int auto_increment primary key,
+id_rodada int,
+id_clube_casa int,
+id_clube_fora int,
+data_partida date,
+gols_casa int default -1,
+gols_fora int default -1,
+foreign key (id_rodada) references Rodada(id_rodada),
+foreign key (id_clube_casa) references Clube(id_clube),
+foreign key (id_clube_fora) references Clube(id_clube)
+);
+
+insert into Admin (username, password) values ('admin', 'admin');
+
+INSERT INTO Pais (nome) VALUES ('Brasil'), ('Argentina'), ('Estados Unidos'), ('Canadá'),
+('França'),
+('Alemanha'), ('Reino Unido'), ('Itália'), ('Espanha'), ('Portugal'), ('México'), ('Japão'), ('China'),
+('Índia'), ('Rússia'), ('Austrália'), ('África do Sul'), ('Coreia do Sul'), ('Nova Zelândia'),
+('Suécia'),
+('Noruega'), ('Dinamarca'), ('Finlândia'), ('Holanda'), ('Bélgica'), ('Suíça'), ('Áustria'), ('Grécia'),
+('Turquia'), ('Egito');
+
+insert into Divisao (divisao) value ('A'),('B'),('C'),('D');
+
+insert into Campeonato (nome, id_divisao, ano, data_inicio, data_fim) values ('Brasileirão', 1, 2024, '2024-1-1', '2024-12-31'), ('Brasileirão', 2, 2024, '2024-1-1', '2024-12-31'), ('Brasileirão', 3, 2024, '2024-1-1', '2024-12-31'), ('Brasileirão', 4, 2024, '2024-1-1', '2024-12-31'), ('Brasileirão', 1, 2023, '2023-1-1', '2023-12-31'), ('Brasileirão', 2, 2023, '2023-1-1', '2023-12-31'), ('Brasileirão', 1, 2022, '2022-1-1', '2022-12-31'), ('Brasileirão', 1, 2021, '2021-1-1', '2021-12-31'), ('Brasileirão', 1, 2020, '2020-1-1', '2020-12-31');
+
+insert into Clube (id_pais, id_divisao, nome) values (1, 1, 'Flamengo'),
+(1, 1, 'Fluminense'),
+(1, 1, 'Palmeiras'),
+(1, 1, 'São Paulo'),
+(1, 1, 'Corinthians'),
+(1, 1, 'Santos'),
+(1, 1, 'Atlético Mineiro'),
+(1, 1, 'Cruzeiro'),
+(1, 1, 'Internacional'),
+(1, 1, 'Grêmio'),
+(1, 1, 'Vasco da Gama'),
+(1, 1, 'Botafogo'),
+(1, 1, 'Fortaleza'),
+(1, 1, 'Ceará'),
+(1, 1, 'Atlético Goianiense'),
+(1, 1, 'Bragantino'),
+(1, 1, 'Goiás'),
+(1, 1, 'América Mineiro'),
+(1, 1, 'São Paulo'),
+(1, 1, 'Palmeiras');
+
+select * from Partida;
