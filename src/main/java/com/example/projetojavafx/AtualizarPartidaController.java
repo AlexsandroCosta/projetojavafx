@@ -37,8 +37,8 @@ public class AtualizarPartidaController {
             gols_fora.setText(String.valueOf(partida.getGols_fora()));
         }
 
-        LocalDate localDate = partida.getData_partida().toLocalDate();
-        data_partida.setValue(localDate);
+        LocalDate data = ((Date) partida.getData_partida()).toLocalDate();
+        data_partida.setValue(data);
     }
 
     public void onAtualizarClick(){

@@ -41,7 +41,7 @@ public class PartidaDaoJDBC implements PartidaDao {
 
         try {
             st = conn.prepareStatement("update Partida set data_partida=?, gols_casa=?, gols_fora=? where id_partida=?");
-            st.setDate(1, p.getData_partida());
+            st.setDate(1, (Date) p.getData_partida());
             st.setInt(2, p.getGols_casa());
             st.setInt(3, p.getGols_fora());
             st.setInt(4, p.getId_partida());
