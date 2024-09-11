@@ -45,7 +45,7 @@ public class PartidaDaoJDBC implements PartidaDao {
             st.setInt(2, p.getGols_casa());
             st.setInt(3, p.getGols_fora());
             st.setInt(4, p.getId_partida());
-            st.executeQuery();
+            st.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }finally {

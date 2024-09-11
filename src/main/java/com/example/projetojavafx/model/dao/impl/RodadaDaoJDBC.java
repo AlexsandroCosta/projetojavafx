@@ -37,6 +37,34 @@ public class RodadaDaoJDBC implements RodadaDao{
     }
 
     @Override
+    public Rodada procurarPorId(int id){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("select * from Rodada where id_rodada=?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            if(rs.next()){
+                Rodada r = new Rodada();
+                r.setId_rodada(rs.getInt("id_rodada"));
+                r.setId_campeonato(rs.getInt("id_campeonato"));
+                r.setNumero(rs.getInt("numero"));
+
+                return r;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeResultset(rs);
+            DB.closeStatement(st);
+        }
+
+        return null;
+    }
+
+    @Override
     public List<Rodada> procurarPorCampeonato(int id_campeonato) {
         PreparedStatement st = null;
         ResultSet rs = null;

@@ -1,12 +1,15 @@
 package com.example.projetojavafx;
 
+import com.example.projetojavafx.model.dao.DAOFactory;
 import com.example.projetojavafx.model.entities.Campeonato;
+import com.example.projetojavafx.model.entities.Classificacao;
 import com.example.projetojavafx.model.entities.Partida;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 public class AtualizarPartidaController {
     private Partida partida;
@@ -46,26 +49,86 @@ public class AtualizarPartidaController {
         if(gols_casa.getText().isEmpty() && !gols_fora.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
             alert.showAndWait();
+            return;
+        }
+
+        int golsCasa, golsFora;
+        try {
+            golsCasa = Integer.parseInt(gols_casa.getText());
+            golsFora = Integer.parseInt(gols_fora.getText());
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "O placa deve ser um número inteiro", ButtonType.OK);
+            alert.showAndWait();
+            return;
         }
 
         if(!gols_casa.getText().isEmpty() && gols_fora.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
             alert.showAndWait();
+            return;
         }
 
         if(gols_casa.getText().isEmpty() || gols_fora.getText().isEmpty()){
             if(partida.getGols_casa()!=-1 && partida.getGols_fora()!=-1){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Digite placares válidos", ButtonType.OK);
                 alert.showAndWait();
+                return;
             }
         }
 
         if(data_partida.getValue()==null){
             Alert alert = new Alert(Alert.AlertType.ERROR, "Digite uma data válida", ButtonType.OK);
             alert.showAndWait();
+            return;
         }
 
+        partida.setGols_casa(golsCasa);
+        partida.setGols_fora(golsFora);
+        partida.setData_partida(java.sql.Date.valueOf(data_partida.getValue()));
 
+        DAOFactory.createPartidaDao().atualizar(partida);
+
+        int id_campeonato = DAOFactory.createRodadaDao().procurarPorId(partida.getId_rodada()).getId_campeonato();
+        int pontos_casa = 0, pontos_fora = 0;
+
+        Classificacao classificacao_casa = DAOFactory.createClassificacaoDao().procurarPorCampeonatoClube(id_campeonato, partida.getId_clube_casa());
+        Classificacao classificacao_fora = DAOFactory.createClassificacaoDao().procurarPorCampeonatoClube(id_campeonato, partida.getId_clube_fora());
+
+        classificacao_casa.setQtd_partidas(classificacao_casa.getQtd_partidas()+1);
+        classificacao_fora.setQtd_partidas(classificacao_fora.getQtd_partidas()+1);
+
+        classificacao_casa.setQtd_gols_feitos(classificacao_casa.getQtd_gols_feitos()+golsCasa);
+        classificacao_fora.setQtd_gols_feitos(classificacao_fora.getQtd_gols_feitos()+golsFora);
+
+        classificacao_casa.setQtd_gols_sofridos(classificacao_casa.getQtd_gols_sofridos()+golsFora);
+        classificacao_fora.setQtd_gols_sofridos(classificacao_fora.getQtd_gols_sofridos()+golsCasa);
+
+        if(golsCasa == golsFora){
+            classificacao_casa.setQtd_empates(classificacao_casa.getQtd_empates()+1);
+            classificacao_fora.setQtd_empates(classificacao_fora.getQtd_empates()+1);
+
+            pontos_casa = 1;
+            pontos_fora = 1;
+        } else if(golsCasa>golsFora){
+            classificacao_casa.setQtd_vitorias(classificacao_casa.getQtd_vitorias()+1);
+            classificacao_fora.setQtd_derrotas(classificacao_fora.getQtd_derrotas()+1);
+
+            pontos_casa = 3;
+        }else{
+            classificacao_casa.setQtd_derrotas(classificacao_casa.getQtd_derrotas()+1);
+            classificacao_fora.setQtd_vitorias(classificacao_fora.getQtd_vitorias()+1);
+
+            pontos_fora = 3;
+        }
+
+        classificacao_casa.setPontos(classificacao_casa.getPontos()+pontos_casa);
+        classificacao_fora.setPontos(classificacao_fora.getPontos()+pontos_fora);
+
+        DAOFactory.createClassificacaoDao().atualizar(classificacao_casa);
+        DAOFactory.createClassificacaoDao().atualizar(classificacao_fora);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Partida atualizada com sucesso!", ButtonType.OK);
+        alert.showAndWait();
 
     }
 
