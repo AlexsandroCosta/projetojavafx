@@ -25,6 +25,6 @@
       <Label layoutX="107.0" layoutY="271.0" prefHeight="18.0" prefWidth="76.0" text="Rodadas:" />
       <ListView fx:id="lista_rodadas" layoutX="107.0" layoutY="289.0" prefHeight="200.0" prefWidth="125.0" />
       <Label layoutX="278.0" layoutY="271.0" prefHeight="18.0" prefWidth="76.0" text="Partidas:" />
-      <ListView fx:id="lista_partidas" layoutX="278.0" layoutY="289.0" prefHeight="200.0" prefWidth="356.0" />
+      <ListView fx:id="lista_partidas" layoutX="278.0" layoutY="289.0" prefHeight="200.0" prefWidth="356.0" stylesheets="@style.css" />
    </children>
 </AnchorPane>

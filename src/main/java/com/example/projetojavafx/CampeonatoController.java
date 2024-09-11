@@ -44,7 +44,7 @@ public class CampeonatoController {
     @FXML
     private ListView<Rodada> lista_rodadas;
     @FXML
-    private ListView<String> lista_partidas;
+    private ListView<Partida> lista_partidas;
 
     public void setCampeonatoSelecionado(Campeonato campeonato){
         this.campeonato = campeonato;
@@ -81,10 +81,10 @@ public class CampeonatoController {
                 Rodada rodada = lista_rodadas.getSelectionModel().getSelectedItem();
 
                 if(rodada != null){
-                    ObservableList<String> partidas = FXCollections.observableArrayList();
+                    ObservableList<Partida> partidas = FXCollections.observableArrayList();
 
                     for(Partida p : DAOFactory.createPartidaDao().procurarPorRodada(rodada.getId_rodada())){
-                        partidas.add(p.getNomeClube_casa() + " " + p.getGols_casa() + " X " + p.getGols_fora() + " " + p.getNomeClubeFora());
+                        partidas.add(p);
                     }
 
                     lista_partidas.setItems(partidas);

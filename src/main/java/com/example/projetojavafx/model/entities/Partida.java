@@ -46,8 +46,8 @@ public class Partida {
         this.id_clube_fora = id_clube_fora;
     }
 
-    public java.sql.Date getData_partida() {
-        return (java.sql.Date) data_partida;
+    public Date getData_partida() {
+        return data_partida;
     }
 
     public void setData_partida(Date data_partida) {
@@ -93,6 +93,14 @@ public class Partida {
 
     @Override
     public String toString() {
-        return getNomeClube_casa() + " " + gols_casa + " X " + gols_fora + " " + getNomeClubeFora();
+        String Sgols_casa = "";
+        String Sgols_fora = "";
+
+        if(gols_casa>-1){
+            Sgols_casa = String.valueOf(gols_casa);
+            Sgols_fora = String.valueOf(gols_fora);
+        }
+
+        return getNomeClube_casa() + " " + Sgols_casa + " X " + Sgols_fora + " " + getNomeClubeFora();
     }
 }
