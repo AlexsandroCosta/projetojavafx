@@ -109,7 +109,8 @@ public class ClassificacaoDaoJDBC implements ClassificacaoDao {
                 c.setId_campeonato(rs.getInt("id_campeonato"));
                 c.setId_clube(rs.getInt("id_clube"));
                 c.setPontos(rs.getInt("pontos"));
-                c.setQtd_vitorias(rs.getInt("qtd_partidas"));
+                c.setQtd_partidas(rs.getInt("qtd_partidas"));
+                c.setQtd_vitorias(rs.getInt("qtd_vitorias"));
                 c.setQtd_derrotas(rs.getInt("qtd_derrotas"));
                 c.setQtd_empates(rs.getInt("qtd_empates"));
                 c.setQtd_gols_feitos(rs.getInt("qtd_gols_feitos"));
