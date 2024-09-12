@@ -1,9 +1,7 @@
 package com.example.projetojavafx;
 
 import com.example.projetojavafx.model.dao.DAOFactory;
-import com.example.projetojavafx.model.entities.Admin;
-import com.example.projetojavafx.model.entities.Campeonato;
-import com.example.projetojavafx.model.entities.Divisao;
+import com.example.projetojavafx.model.entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,6 +27,16 @@ public class AdminController {
     private TextField ano;
     @FXML
     private Button filtrar;
+    @FXML
+    private ListView<Clube> lista_clubes;
+    @FXML
+    private TextField nome_clube;
+    @FXML
+    private ComboBox<Divisao> divisao_clube;
+    @FXML
+    private ComboBox<Pais> pais;
+    @FXML
+    private Button filtrar_clube;
 
     public void setAdmin(Admin admin){
         this.admin = admin;
@@ -44,8 +52,15 @@ public class AdminController {
         lista_campeonatos.setItems(items);
 
         divisao.getItems().add(null);
+        divisao_clube.getItems().add(null);
         for(Divisao d : DAOFactory.createDivisaoDao().procurarTodos()){
             divisao.getItems().add(d);
+            divisao_clube.getItems().add(d);
+        }
+
+        pais.getItems().add(null);
+        for(Pais p : DAOFactory.createPaisDao().procurarTodos()){
+            pais.getItems().add(p);
         }
 
         lista_campeonatos.setOnMouseClicked((MouseEvent event) -> {
@@ -66,6 +81,23 @@ public class AdminController {
             }
         });
 
+        ObservableList<Clube> clubes = FXCollections.observableArrayList();
+
+        for(Clube c : DAOFactory.createClubeDao().procurarPorTodos()){
+            clubes.add(c);
+        }
+
+        lista_clubes.setItems(clubes);
+
+        lista_clubes.setOnMouseClicked((MouseEvent event) -> {
+            if(event.getClickCount()==2){
+                Clube clube_selecionado = lista_clubes.getSelectionModel().getSelectedItem();
+
+                if(clube_selecionado!=null){
+                    System.out.println(clube_selecionado);
+                }
+            }
+        });
     }
 
     public void onFiltrarClick(){
@@ -103,4 +135,22 @@ public class AdminController {
             throw new RuntimeException(e);
         }
     }
+
+    public void onFiltrarClubesClick(){
+        String nomeClube = nome_clube.getText().trim();
+        Divisao divisaoFiltro = divisao_clube.getValue();
+        Pais paisFiltro = pais.getValue();
+
+        ObservableList<Clube> items = FXCollections.observableArrayList();
+
+        for(Clube c : DAOFactory.createClubeDao().procurarPorFiltro(
+                nomeClube.isEmpty()?null : nomeClube,
+                divisaoFiltro!=null?divisaoFiltro.getId_divisao():null,
+                paisFiltro!=null?paisFiltro.getId_pais():null)){
+            items.add(c);
+        }
+
+        lista_clubes.setItems(items);
+    }
+
 }

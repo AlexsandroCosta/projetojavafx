@@ -9,10 +9,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -53,6 +50,8 @@ public class AdminCampeonatoController {
     private ListView<Rodada> lista_rodadas;
     @FXML
     private ListView<Partida> lista_partidas;
+    @FXML
+    private Button atualizar_classificacao;
 
     public void initialize(){
         titulo.setText(campeonato.toString());
@@ -112,6 +111,10 @@ public class AdminCampeonatoController {
                 }
             }
         });
+    }
+
+    public void onAtualizarClassificacaoClick(){
+        tabela.setItems(getClassificacao());
     }
 
     private ObservableList<Classificacao> getClassificacao(){

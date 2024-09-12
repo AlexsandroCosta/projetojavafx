@@ -82,4 +82,54 @@ public class ClubeDaoJDBC implements ClubeDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public List<Clube> procurarPorFiltro(String nome, Integer id_divisao, Integer id_pais) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String comando = ("select * from Clube where 1=1");
+
+        if(nome != null && !nome.isEmpty()){
+            comando += " AND nome LIKE ?";
+        }
+        if(id_divisao != null){
+            comando += " AND id_divisao = ?";
+        }
+        if(id_pais != null){
+            comando += " AND id_pais = ?";
+        }
+
+        try {
+            st = conn.prepareStatement(comando);
+            int ind = 1;
+
+            if(nome != null && !nome.isEmpty()){
+                st.setString(ind++, "%"+ nome + "%");
+            }
+            if(id_divisao != null){
+                st.setInt(ind++, id_divisao);
+            }
+            if(id_pais != null){
+                st.setInt(ind, id_pais);
+            }
+
+            rs = st.executeQuery();
+            List<Clube> lista = new ArrayList<>();
+
+            while(rs.next()){
+                Clube c = new Clube();
+                c.setId_clube(rs.getInt("id_clube"));
+                c.setId_pais(rs.getInt("id_pais"));
+                c.setId_divisao(rs.getInt("id_divisao"));
+                c.setNome(rs.getString("nome"));
+
+                lista.add(c);
+            }
+
+            return  lista;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

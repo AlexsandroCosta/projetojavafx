@@ -10,4 +10,5 @@ public interface ClubeDao {
     void deletarPorId(int id);
     Clube procurarPorId(int id);
     List<Clube> procurarPorTodos();
+    List<Clube> procurarPorFiltro(String nome, Integer id_divisao, Integer id_pais);
 }
