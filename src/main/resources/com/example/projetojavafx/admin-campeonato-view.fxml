@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="511.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="511.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="titulo" alignment="CENTER" layoutX="239.0" layoutY="23.0" prefHeight="18.0" prefWidth="255.0" />
       <TableView fx:id="tabela" layoutX="127.0" layoutY="54.0" prefHeight="202.0" prefWidth="479.0">
@@ -27,6 +27,7 @@
       <ListView fx:id="lista_rodadas" layoutX="107.0" layoutY="289.0" prefHeight="200.0" prefWidth="125.0" />
       <Label layoutX="278.0" layoutY="271.0" prefHeight="18.0" prefWidth="76.0" text="Partidas:" />
       <ListView fx:id="lista_partidas" layoutX="278.0" layoutY="289.0" prefHeight="200.0" prefWidth="356.0" stylesheets="@style.css" />
-      <Button fx:id="atualizar_classificacao" layoutX="614.0" layoutY="232.0" mnemonicParsing="false" onAction="#onAtualizarClassificacaoClick" text="Atualizar" />
+      <Button fx:id="atualizar_classificacao" layoutX="638.0" layoutY="181.0" mnemonicParsing="false" onAction="#onAtualizarClassificacaoClick" text="Atualizar tabela" />
+      <Button fx:id="remover_campeonato" layoutX="618.0" layoutY="230.0" mnemonicParsing="false" onAction="#onRemoverCampeonatoClick" text="Remover campeonato" />
    </children>
 </AnchorPane>

@@ -37,9 +37,6 @@ public class Pais {
 
     @Override
     public String toString() {
-        return "Pais{" +
-                "id_pais=" + id_pais +
-                ", nome='" + nome + '\'' +
-                '}';
+        return nome;
     }
 }

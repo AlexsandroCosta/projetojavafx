@@ -7,6 +7,7 @@ public class Clube {
     private int id_pais;
     private int id_divisao;
     private String nome;
+    private int deletado;
 
     public int getId_clube() {
         return id_clube;
@@ -38,6 +39,14 @@ public class Clube {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public int getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(int deletado) {
+        this.deletado = deletado;
     }
 
     @Override

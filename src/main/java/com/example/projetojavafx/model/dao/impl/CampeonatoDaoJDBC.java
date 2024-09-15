@@ -52,7 +52,15 @@ public class CampeonatoDaoJDBC implements CampeonatoDao {
 
     @Override
     public void deletarPorId(int id) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("update Campeonato set deletado = true where id_campeonato=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -66,7 +74,7 @@ public class CampeonatoDaoJDBC implements CampeonatoDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("select * from Campeonato");
+            st = conn.prepareStatement("select * from Campeonato where deletado=0");
             rs = st.executeQuery();
             List<Campeonato> lista = new ArrayList<>();
 
@@ -96,7 +104,7 @@ public class CampeonatoDaoJDBC implements CampeonatoDao {
         PreparedStatement st = null;
         ResultSet rs = null;
 
-        String comando = "select * from Campeonato where 1=1";
+        String comando = "select * from Campeonato where 1=1 AND deletado=0";
 
         if(nome != null && !nome.isEmpty()){
             comando += " AND nome LIKE ?";

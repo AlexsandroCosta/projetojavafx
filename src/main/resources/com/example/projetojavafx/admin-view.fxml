@@ -17,7 +17,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="adicionar_campeonato" layoutX="477.0" layoutY="39.0" mnemonicParsing="false" onAction="#onAdicionarCampeonatoClick" text="Adicionar" />
+                        <Button fx:id="adicionar_campeonato" layoutX="387.0" layoutY="41.0" mnemonicParsing="false" onAction="#onAdicionarCampeonatoClick" text="Adicionar campeonato" />
                         <ListView fx:id="lista_campeonatos" layoutX="14.0" layoutY="14.0" prefHeight="195.0" prefWidth="315.0" />
                         <Label layoutX="14.0" layoutY="217.0" text="Filtrar campeonatos:" />
                         <TextField fx:id="nome" layoutX="14.0" layoutY="244.0" prefHeight="26.0" prefWidth="185.0" promptText="Nome" />
@@ -38,6 +38,14 @@
                         <ComboBox fx:id="divisao_clube" layoutX="14.0" layoutY="283.0" prefHeight="24.0" prefWidth="96.0" promptText="Divisão" />
                         <ComboBox fx:id="pais" layoutX="117.0" layoutY="283.0" prefHeight="24.0" prefWidth="88.0" promptText="Paises" />
                         <Button fx:id="filtrar_clube" layoutX="229.0" layoutY="260.0" mnemonicParsing="false" onAction="#onFiltrarClubesClick" prefHeight="24.0" prefWidth="84.0" text="Filtrar" />
+                        <TextField fx:id="nome_clube1" layoutX="382.0" layoutY="157.0" prefHeight="28.0" prefWidth="208.0" visible="false" />
+                        <Label fx:id="c2" layoutX="338.0" layoutY="162.0" text="Nome:" visible="false" />
+                        <Label fx:id="c1" layoutX="338.0" layoutY="132.0" text="Clube selecionado:" visible="false" />
+                        <Label fx:id="c3" layoutX="338.0" layoutY="207.0" text="País:" visible="false" />
+                        <ComboBox fx:id="lista_paises" layoutX="378.0" layoutY="203.0" prefWidth="150.0" visible="false" />
+                        <Button fx:id="c5" layoutX="359.0" layoutY="247.0" mnemonicParsing="false" onAction="#onRemoverClubeCLick" text="Remover clube" visible="false" />
+                        <Button fx:id="c4" layoutX="486.0" layoutY="247.0" mnemonicParsing="false" onAction="#onAtualizarClubeClick" text="Atualizar" visible="false" />
+                        <Button fx:id="onAdicionarClubeClick" layoutX="413.0" layoutY="42.0" mnemonicParsing="false" onAction="#onAdicionarClubeClick" text="Adicionar clube" />
                      </children></AnchorPane>
             </content>
           </Tab>

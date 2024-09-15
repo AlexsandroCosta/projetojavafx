@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="262.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetojavafx.AdionarClubeController">
+   <children>
+      <Label layoutX="51.0" layoutY="65.0" text="Nome:" />
+      <TextField fx:id="nome_clube" layoutX="98.0" layoutY="61.0" prefHeight="26.0" prefWidth="214.0" />
+      <Label layoutX="51.0" layoutY="108.0" text="Divisão:" />
+      <ComboBox fx:id="lista_divisoes" layoutX="104.0" layoutY="104.0" prefHeight="26.0" prefWidth="101.0" promptText="Divisões" />
+      <Label layoutX="220.0" layoutY="108.0" text="País:" />
+      <ComboBox fx:id="lista_paises" layoutX="256.0" layoutY="104.0" prefHeight="26.0" prefWidth="108.0" promptText="Países" />
+      <Button fx:id="adicionar_clube" layoutX="151.0" layoutY="176.0" mnemonicParsing="false" onAction="#onAdicionarClubeClick" text="Adicionar clube" />
+   </children>
+</AnchorPane>

@@ -20,16 +20,52 @@ public class ClubeDaoJDBC implements ClubeDao {
 
     @Override
     public void inserir(Clube c) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("insert into Clube(id_pais, id_divisao, nome) values (?,?,?)");
+            st.setInt(1, c.getId_pais());
+            st.setInt(2, c.getId_divisao());
+            st.setString(3, c.getNome());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
     public void atualizar(Clube c) {
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("update Clube set nome=?, id_pais=? where id_clube=?");
+            st.setString(1, c.getNome());
+            st.setInt(2, c.getId_pais());
+            st.setInt(3, c.getId_clube());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeStatement(st);
+        }
 
     }
 
     @Override
     public void deletarPorId(int id) {
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement("update Clube set deletado=1 where id_clube=?");
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            DB.closeStatement(st);
+        }
 
     }
 
@@ -64,7 +100,7 @@ public class ClubeDaoJDBC implements ClubeDao {
         ResultSet rs = null;
 
         try {
-            st = conn.prepareStatement("select * from Clube");
+            st = conn.prepareStatement("select * from Clube where deletado=0 order by nome");
             rs = st.executeQuery();
             List<Clube> lista = new ArrayList<>();
 
@@ -88,7 +124,7 @@ public class ClubeDaoJDBC implements ClubeDao {
         PreparedStatement st = null;
         ResultSet rs = null;
 
-        String comando = ("select * from Clube where 1=1");
+        String comando = ("select * from Clube where 1=1 and deletado=0");
 
         if(nome != null && !nome.isEmpty()){
             comando += " AND nome LIKE ?";

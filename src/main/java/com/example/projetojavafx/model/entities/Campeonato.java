@@ -12,6 +12,7 @@ public class Campeonato {
     private int ano;
     private Date data_inicio;
     private Date data_fim;
+    private int deletado;
 
     public String getNome() {
         return nome;
@@ -64,6 +65,14 @@ public class Campeonato {
 
     public void setData_fim(Date data_fim) {
         this.data_fim = data_fim;
+    }
+
+    public int getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(int deletado) {
+        this.deletado = deletado;
     }
 
     @Override

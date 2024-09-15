@@ -8,13 +8,16 @@ import com.example.projetojavafx.model.entities.Rodada;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class AdminCampeonatoController {
     private Campeonato campeonato;
@@ -52,6 +55,8 @@ public class AdminCampeonatoController {
     private ListView<Partida> lista_partidas;
     @FXML
     private Button atualizar_classificacao;
+    @FXML
+    private Button remover_campeonato;
 
     public void initialize(){
         titulo.setText(campeonato.toString());
@@ -125,5 +130,19 @@ public class AdminCampeonatoController {
         }
 
         return classificacao;
+    }
+
+    public void onRemoverCampeonatoClick(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmação de Exclusão");
+        alert.setHeaderText("Você tem certeza que deseja deletar?");
+        alert.setContentText("Esta ação não pode ser desfeita.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            DAOFactory.createCampeonatoDao().deletarPorId(campeonato.getId_campeonato());
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 }
