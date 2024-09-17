@@ -116,6 +116,8 @@ public class CampeonatoDaoJDBC implements CampeonatoDao {
             comando += " AND ano = ?";
         }
 
+        comando += " order by ano desc, id_divisao";
+
         try {
             st = conn.prepareStatement(comando);
 
