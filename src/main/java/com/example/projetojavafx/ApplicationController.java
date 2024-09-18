@@ -107,6 +107,9 @@ public class ApplicationController {
                 AdminController adminController = new AdminController();
                 adminController.setAdmin(admin);
 
+                username.setText("");
+                password.setText("");
+
                 stage = Application.newStage("admin-view.fxml", adminController);
             } catch (IOException e) {
                 throw new RuntimeException(e);

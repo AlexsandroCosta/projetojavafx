@@ -9,9 +9,10 @@
 <AnchorPane prefHeight="511.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="titulo" alignment="CENTER" layoutX="239.0" layoutY="23.0" prefHeight="18.0" prefWidth="255.0" />
-      <TableView fx:id="tabela" layoutX="127.0" layoutY="54.0" prefHeight="202.0" prefWidth="479.0">
+      <TableView fx:id="tabela" layoutX="88.0" layoutY="54.0" prefHeight="202.0" prefWidth="557.0">
         <columns>
-          <TableColumn fx:id="clubeColumn" prefWidth="150.0" text="Clube" />
+            <TableColumn fx:id="posicaoColumn" prefWidth="28.0" text="Pos" />
+          <TableColumn fx:id="clubeColumn" prefWidth="197.0" text="Clube" />
           <TableColumn fx:id="pontosColumn" prefWidth="40.0" text="Pts" />
             <TableColumn fx:id="partidasColumn" prefWidth="40.0" text="PJ" />
             <TableColumn fx:id="vitoriasColumn" prefWidth="40.0" text="VIT" />

@@ -82,6 +82,15 @@ public class AtualizarPartidaController {
             return;
         }
 
+        boolean ocorreu = false;
+        int antigo_gols_casa=0 , antigo_gols_fora=0;
+
+        if(partida.getGols_casa()!=-1){
+            ocorreu = true;
+            antigo_gols_casa = partida.getGols_casa();
+            antigo_gols_fora = partida.getGols_fora();
+        }
+
         partida.setGols_casa(golsCasa);
         partida.setGols_fora(golsFora);
         partida.setData_partida(java.sql.Date.valueOf(data_partida.getValue()));
@@ -94,14 +103,34 @@ public class AtualizarPartidaController {
         Classificacao classificacao_casa = DAOFactory.createClassificacaoDao().procurarPorCampeonatoClube(id_campeonato, partida.getId_clube_casa());
         Classificacao classificacao_fora = DAOFactory.createClassificacaoDao().procurarPorCampeonatoClube(id_campeonato, partida.getId_clube_fora());
 
-        classificacao_casa.setQtd_partidas(classificacao_casa.getQtd_partidas()+1);
-        classificacao_fora.setQtd_partidas(classificacao_fora.getQtd_partidas()+1);
+        if(!ocorreu) {
+            classificacao_casa.setQtd_partidas(classificacao_casa.getQtd_partidas() + 1);
+            classificacao_fora.setQtd_partidas(classificacao_fora.getQtd_partidas() + 1);
+        }else{
+            if(antigo_gols_casa == antigo_gols_fora){
+                classificacao_casa.setQtd_empates(classificacao_casa.getQtd_empates()-1);
+                classificacao_fora.setQtd_empates(classificacao_fora.getQtd_empates()-1);
 
-        classificacao_casa.setQtd_gols_feitos(classificacao_casa.getQtd_gols_feitos()+golsCasa);
-        classificacao_fora.setQtd_gols_feitos(classificacao_fora.getQtd_gols_feitos()+golsFora);
+                classificacao_casa.setPontos(classificacao_casa.getPontos()-1);
+                classificacao_fora.setPontos(classificacao_fora.getPontos()-1);
+            } else if(antigo_gols_casa>antigo_gols_fora){
+                classificacao_casa.setQtd_vitorias(classificacao_casa.getQtd_vitorias()-1);
+                classificacao_fora.setQtd_derrotas(classificacao_fora.getQtd_derrotas()-1);
 
-        classificacao_casa.setQtd_gols_sofridos(classificacao_casa.getQtd_gols_sofridos()+golsFora);
-        classificacao_fora.setQtd_gols_sofridos(classificacao_fora.getQtd_gols_sofridos()+golsCasa);
+                classificacao_casa.setPontos(classificacao_casa.getPontos()-3);
+            }else{
+                classificacao_casa.setQtd_derrotas(classificacao_casa.getQtd_derrotas()-1);
+                classificacao_fora.setQtd_vitorias(classificacao_fora.getQtd_vitorias()-1);
+
+                classificacao_fora.setPontos(classificacao_fora.getPontos()-3);
+            }
+        }
+
+        classificacao_casa.setQtd_gols_feitos(classificacao_casa.getQtd_gols_feitos() + golsCasa - antigo_gols_casa);
+        classificacao_fora.setQtd_gols_feitos(classificacao_fora.getQtd_gols_feitos() + golsFora - antigo_gols_fora);
+
+        classificacao_casa.setQtd_gols_sofridos(classificacao_casa.getQtd_gols_sofridos() + golsFora - antigo_gols_fora);
+        classificacao_fora.setQtd_gols_sofridos(classificacao_fora.getQtd_gols_sofridos() + golsCasa - antigo_gols_casa);
 
         if(golsCasa == golsFora){
             classificacao_casa.setQtd_empates(classificacao_casa.getQtd_empates()+1);

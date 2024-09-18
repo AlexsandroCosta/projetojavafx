@@ -136,6 +136,8 @@ public class ClubeDaoJDBC implements ClubeDao {
             comando += " AND id_pais = ?";
         }
 
+        comando += " order by nome";
+
         try {
             st = conn.prepareStatement(comando);
             int ind = 1;

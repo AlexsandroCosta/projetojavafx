@@ -22,6 +22,7 @@ CREATE TABLE Clube(
 id_clube int AUTO_INCREMENT PRIMARY key,
 id_pais int,
 id_divisao int null,
+deletado boolean default false,
 nome varchar(50),
 FOREIGN KEY (id_pais) REFERENCES Pais(id_pais),
 FOREIGN key (id_divisao) REFERENCES Divisao(id_divisao)
@@ -45,6 +46,7 @@ id_divisao int,
 ano int,
 data_inicio date,
 data_fim date,
+deletado boolean default false,
 foreign key (id_divisao) references Divisao(id_divisao)
 );
 
@@ -104,7 +106,7 @@ insert into Clube (id_pais, id_divisao, nome) values (1, 1, 'Flamengo'),
 (1, 1, 'Palmeiras'),
 (1, 1, 'São Paulo'),
 (1, 1, 'Corinthians'),
-(1, 1, 'Santos'),
+(1, 1, 'EC Vitória'),
 (1, 1, 'Atlético Mineiro'),
 (1, 1, 'Cruzeiro'),
 (1, 1, 'Internacional'),
@@ -112,12 +114,11 @@ insert into Clube (id_pais, id_divisao, nome) values (1, 1, 'Flamengo'),
 (1, 1, 'Vasco da Gama'),
 (1, 1, 'Botafogo'),
 (1, 1, 'Fortaleza'),
-(1, 1, 'Ceará'),
+(1, 1, 'Criciúma'),
 (1, 1, 'Atlético Goianiense'),
 (1, 1, 'Bragantino'),
-(1, 1, 'Goiás'),
-(1, 1, 'América Mineiro'),
-(1, 1, 'São Paulo'),
-(1, 1, 'Palmeiras');
+(1, 1, 'Bahia'),
+(1, 1, 'Juventude'),
+(1, 1, 'Atlético Paranaense'),
+(1, 1, 'Cuiabá');
 
-select * from Partida;

@@ -16,6 +16,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+import java.util.Comparator;
+
 public class CampeonatoController {
     private Campeonato campeonato;
 
@@ -23,6 +25,8 @@ public class CampeonatoController {
     private Label titulo;
     @FXML
     private TableView<Classificacao> tabela;
+    @FXML
+    private TableColumn<Classificacao, Integer> posicaoColumn;
     @FXML
     private TableColumn<Classificacao, String> clubeColumn;
     @FXML
@@ -53,6 +57,13 @@ public class CampeonatoController {
     public void initialize(){
         titulo.setText(campeonato.toString());
 
+        posicaoColumn.setCellValueFactory(cellData -> {
+            ObservableList<Classificacao> classificacao = getClassificacao();
+            classificacao.sort(Comparator.comparingInt(Classificacao::getPontos).reversed());
+
+            int posicao = classificacao.indexOf(cellData.getValue()) + 1;
+            return new ReadOnlyObjectWrapper<>(posicao);
+        });
         clubeColumn.setCellValueFactory(cellData ->
             new ReadOnlyObjectWrapper<>(cellData.getValue().getNomeClube())
         );

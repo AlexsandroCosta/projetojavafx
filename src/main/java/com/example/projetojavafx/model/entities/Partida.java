@@ -2,6 +2,7 @@ package com.example.projetojavafx.model.entities;
 
 import com.example.projetojavafx.model.dao.DAOFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -95,12 +96,13 @@ public class Partida {
     public String toString() {
         String Sgols_casa = "";
         String Sgols_fora = "";
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
         if(gols_casa>-1){
             Sgols_casa = String.valueOf(gols_casa);
             Sgols_fora = String.valueOf(gols_fora);
         }
 
-        return getNomeClube_casa() + " " + Sgols_casa + " X " + Sgols_fora + " " + getNomeClubeFora();
+        return getNomeClube_casa() + " " + Sgols_casa + " X " + Sgols_fora + " " + getNomeClubeFora() + " | " + formato.format(data_partida);
     }
 }
